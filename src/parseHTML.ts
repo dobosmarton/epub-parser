@@ -66,7 +66,9 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
           if (attrVal && attr === 'src' && resolveSrc) {
             attrVal = resolveSrc(attrVal)
           }
-          attrs[attr] = attrVal
+          if (attrVal) {
+            attrs[attr] = attrVal
+          }
         })
 
         return { tag, type: 1, children, attrs }

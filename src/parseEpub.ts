@@ -7,7 +7,7 @@ import parseSection, { Section } from './parseSection'
 
 const xmlParser = new xml2js.Parser()
 
-const xmlToJs = (xml) => {
+const xmlToJs = xml => {
   return new Promise<any>((resolve, reject) => {
     xmlParser.parseString(xml, (err, object) => {
       if (err) {
@@ -19,12 +19,14 @@ const xmlToJs = (xml) => {
   })
 }
 
-const determineRoot = (opfPath) => {
+const determineRoot = opfPath => {
   let root = ''
   // set the opsRoot for resolving paths
-  if (opfPath.match(/\//)) { // not at top level
+  if (opfPath.match(/\//)) {
+    // not at top level
     root = opfPath.replace(/\/([^\/]+)\.opf/i, '')
-    if (!root.match(/\/$/)) { // 以 '/' 结尾，下面的 zip 路径写法会简单很多
+    if (!root.match(/\/$/)) {
+      // 以 '/' 结尾，下面的 zip 路径写法会简单很多
       root += '/'
     }
     if (root.match(/^\//)) {
@@ -34,7 +36,7 @@ const determineRoot = (opfPath) => {
   return root
 }
 
-const parseMetadata = (metadata) => {
+const parseMetadata = metadata => {
   const title = _.get(metadata[0], ['dc:title', 0]) as string
   let author = _.get(metadata[0], ['dc:creator', 0]) as string
 
@@ -46,7 +48,7 @@ const parseMetadata = (metadata) => {
   const meta = {
     title,
     author,
-    publisher
+    publisher,
   }
   return meta
 }
@@ -72,7 +74,9 @@ export class Epub {
     this._zip = new nodeZip(buffer, { binary: true, base64: false, checkCRC32: true })
   }
 
-  resolve(path: string): {
+  resolve(
+    path: string,
+  ): {
     asText: () => string
   } {
     let _path
@@ -102,8 +106,7 @@ export class Epub {
   }
 
   _getManifest(content) {
-    return _.get(content, ['package', 'manifest', 0, 'item'], [])
-      .map(item => item.$) as any[]
+    return _.get(content, ['package', 'manifest', 0, 'item'], []).map(item => item.$) as any[]
   }
 
   _resolveIdFromLink(href) {
@@ -116,16 +119,15 @@ export class Epub {
   }
 
   _getSpine() {
-    return _.get(this._content, ['package', 'spine', 0, 'itemref'], [])
-      .map(item => {
-        return item.$.idref
-      })
+    return _.get(this._content, ['package', 'spine', 0, 'itemref'], []).map(item => {
+      return item.$.idref
+    })
   }
 
   _genStructure(tocObj, resolveNodeId = false) {
     const rootNavPoints = _.get(tocObj, ['ncx', 'navMap', '0', 'navPoint'], [])
 
-    const parseNavPoint = (navPoint) => {
+    const parseNavPoint = navPoint => {
       // link to section
       const path = _.get(navPoint, ['content', '0', '$', 'src'], '')
       const name = _.get(navPoint, ['navLabel', '0', 'text', '0'])
@@ -146,11 +148,11 @@ export class Epub {
         nodeId,
         path,
         playOrder,
-        children
+        children,
       }
     }
 
-    const parseNavPoints = (navPoints) => {
+    const parseNavPoints = navPoints => {
       return navPoints.map(point => {
         return parseNavPoint(point)
       })
@@ -170,7 +172,7 @@ export class Epub {
         htmlString: html,
         resourceResolver: this.resolve.bind(this),
         idResolver: this._resolveIdFromLink.bind(this),
-        expand
+        expand,
       })
     })
   }
@@ -207,7 +209,7 @@ export class Epub {
 }
 
 export interface ParserOptions {
-  type?: 'binaryString' | 'path' | 'buffer',
+  type?: 'binaryString' | 'path' | 'buffer'
   expand?: boolean
 }
 export default function parserWrapper(target: string | Buffer, options: ParserOptions = {}) {

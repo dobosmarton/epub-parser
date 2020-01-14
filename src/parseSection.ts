@@ -4,7 +4,7 @@ import parseLink from './parseLink'
 import parseHTML from './parseHTML'
 import * as mdConverters from './mdConverters'
 
-const isInternalUri = (uri) => {
+const isInternalUri = uri => {
   return uri.indexOf('http://') === -1 && uri.indexOf('https://') === -1
 }
 
@@ -35,13 +35,19 @@ export class Section {
 
   toMarkdown?() {
     return toMarkdown(this.htmlString, {
-      converters: [mdConverters.h, mdConverters.span, mdConverters.div, mdConverters.img, mdConverters.a]
+      converters: [
+        mdConverters.h,
+        mdConverters.span,
+        mdConverters.div,
+        mdConverters.img,
+        mdConverters.a,
+      ],
     })
   }
 
   toHtmlObjects?() {
     return parseHTML(this.htmlString, {
-      resolveHref: (href) => {
+      resolveHref: href => {
         if (isInternalUri(href)) {
           const { hash } = parseLink(href)
           // todo: what if a link only contains hash part?
@@ -53,16 +59,21 @@ export class Section {
         }
         return href
       },
-      resolveSrc: (src) => {
+      resolveSrc: src => {
         if (isInternalUri(src)) {
           // todo: may have bugs
-          const absolutePath = path.resolve('/', src).substr(1)
-          const buffer = this._resourceResolver(absolutePath).asNodeBuffer()
-          const base64 = buffer.toString('base64')
-          return `data:image/png;base64,${base64}`
+          try {
+            const absolutePath = path.resolve('/', src).substr(1)
+            const buffer = this._resourceResolver(absolutePath).asNodeBuffer()
+            const base64 = buffer.toString('base64')
+            return `data:image/png;base64,${base64}`
+          } catch (error) {
+            console.log('resolveSrc#error', error.message)
+            return
+          }
         }
         return src
-      }
+      },
     })
   }
 }
