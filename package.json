@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gaoxiaoliangz/epub-parser.git"
+    "url": "git+https://github.com/dobosmarton/epub-parser.git"
   },
   "keywords": [
     "epub-parser",
@@ -25,10 +25,6 @@
   ],
   "author": "gaoxiaoliangz",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gaoxiaoliangz/epub-parser/issues"
-  },
-  "homepage": "https://github.com/gaoxiaoliangz/epub-parser#readme",
   "dependencies": {
     "jsdom": "^15.1.1",
     "lodash": "^4.17.15",
