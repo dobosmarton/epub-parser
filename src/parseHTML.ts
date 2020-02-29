@@ -48,7 +48,15 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
       return node.nodeType === 1 || node.nodeType === 3
     },
     transformer(node, children) {
-      console.log('attributes#1', node.nodeType, node.tagName, node.attributes)
+      console.log('attributes#1', node.nodeType, node.tagName)
+
+      var attrs = node.attributes
+      var output = ''
+      for (var i = attrs.length - 1; i >= 0; i--) {
+        output += attrs[i].name + '->' + attrs[i].value
+      }
+      console.log('attributes#output', output)
+
       if (node.nodeType === 1) {
         const tag = node.tagName.toLowerCase()
         const attrs: GeneralObject = {}
