@@ -2,9 +2,9 @@ import { JSDOM } from 'jsdom'
 import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
-const OMITTED_TAGS = ['head', 'input', 'textarea', 'script', 'svg']
+const OMITTED_TAGS = ['head', 'input', 'textarea', 'style', 'script', 'svg']
 const UNWRAP_TAGS = ['body', 'html', 'div', 'span']
-const PICKED_ATTRS = ['href', 'src', 'id', 'class', 'style']
+const PICKED_ATTRS = ['href', 'src', 'id', 'class']
 
 /**
  * recursivelyReadParent
@@ -48,6 +48,7 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
       return node.nodeType === 1 || node.nodeType === 3
     },
     transformer(node, children) {
+      console.log('attributes#1', node.nodeType, node.tagName, node.attributes)
       if (node.nodeType === 1) {
         const tag = node.tagName.toLowerCase()
         const attrs: GeneralObject = {}
@@ -63,9 +64,9 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
         PICKED_ATTRS.forEach(attr => {
           let attrVal = node.getAttribute(attr) || undefined
 
-          if (attr === 'class' || attr === 'style' || attr === 'id') {
-            console.log('class', attr, attrVal)
-          }
+          //  if (attr === 'class' || attr === 'style' || attr === 'id') {
+          //    console.log('class', attr, attrVal)
+          //  }
 
           if (attrVal && attr === 'href' && resolveHref) {
             attrVal = resolveHref(attrVal)
@@ -81,6 +82,7 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
         return { tag, type: 1, children, attrs }
       } else {
         const text = node.textContent.trim()
+
         if (!text) {
           return null
         }
