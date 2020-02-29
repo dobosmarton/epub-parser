@@ -2,9 +2,9 @@ import { JSDOM } from 'jsdom'
 import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
-const OMITTED_TAGS = ['head', 'input', 'textarea', 'script', 'style', 'svg']
+const OMITTED_TAGS = ['head', 'input', 'textarea', 'script', 'svg']
 const UNWRAP_TAGS = ['body', 'html', 'div', 'span']
-const PICKED_ATTRS = ['href', 'src', 'id', 'class']
+const PICKED_ATTRS = ['href', 'src', 'id', 'class', 'style']
 
 /**
  * recursivelyReadParent
@@ -63,8 +63,8 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
         PICKED_ATTRS.forEach(attr => {
           let attrVal = node.getAttribute(attr) || undefined
 
-          if (attr === 'class') {
-            console.log('class', attrVal, attrs)
+          if (attr === 'class' || attr === 'style' || attr === 'id') {
+            console.log('class', attr, attrVal)
           }
 
           if (attrVal && attr === 'href' && resolveHref) {
