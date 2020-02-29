@@ -60,6 +60,11 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
 
         PICKED_ATTRS.forEach(attr => {
           let attrVal = node.getAttribute(attr) || undefined
+
+          if (attr === 'class') {
+            console.log('class', attrVal, attrs)
+          }
+
           if (attrVal && attr === 'href' && resolveHref) {
             attrVal = resolveHref(attrVal)
           }
