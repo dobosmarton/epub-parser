@@ -4,7 +4,7 @@ import { traverseNestedObject } from './utils'
 
 const OMITTED_TAGS = ['head', 'input', 'textarea', 'script', 'style', 'svg']
 const UNWRAP_TAGS = ['body', 'html', 'div', 'span']
-const PICKED_ATTRS = ['href', 'src', 'id']
+const PICKED_ATTRS = ['href', 'src', 'id', 'class']
 
 /**
  * recursivelyReadParent
