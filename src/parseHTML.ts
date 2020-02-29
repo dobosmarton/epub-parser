@@ -39,6 +39,8 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
   const rootNode = new JSDOM(HTMLString).window.document.documentElement
   const { resolveHref, resolveSrc } = config
 
+  console.log('####parseHTML')
+
   // initial parse
   return traverseNestedObject(rootNode, {
     childrenKey: 'childNodes',
