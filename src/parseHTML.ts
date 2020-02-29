@@ -3,8 +3,8 @@ import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
 const OMITTED_TAGS = ['head', 'input', 'textarea', 'style', 'script', 'svg']
-const UNWRAP_TAGS = ['body', 'html', 'span']
-const PICKED_ATTRS = ['href', 'src', 'id', 'class']
+const UNWRAP_TAGS = []
+const PICKED_ATTRS = ['href', 'src', 'id', 'class', 'data-type', 'title']
 
 /**
  * recursivelyReadParent
@@ -38,9 +38,6 @@ export interface ParseHTMLConfig {
 const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
   const rootNode = new JSDOM(HTMLString).window.document.documentElement
   const { resolveHref, resolveSrc } = config
-
-  console.log('####parseHTML')
-
   // initial parse
   return traverseNestedObject(rootNode, {
     childrenKey: 'childNodes',
