@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
 const OMITTED_TAGS = ['head', 'input', 'textarea', 'style', 'script', 'svg']
-const UNWRAP_TAGS = ['body', 'html', 'div', 'span']
+const UNWRAP_TAGS = ['body', 'html', 'span']
 const PICKED_ATTRS = ['href', 'src', 'id', 'class']
 
 /**
@@ -54,7 +54,7 @@ const parseHTML = (HTMLString, config: ParseHTMLConfig = {}) => {
       if (attrs) {
         var output = ''
         for (var i = attrs.length - 1; i >= 0; i--) {
-          output += attrs[i].name + '->' + attrs[i].value
+          output += attrs[i].name + '->' + attrs[i].value + '; '
         }
         console.log('attributes#output', output)
       }
