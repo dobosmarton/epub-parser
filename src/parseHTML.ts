@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom'
 import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
-const OMITTED_TAGS = ['head', 'input', 'textarea', 'style', 'script', 'svg']
+const OMITTED_TAGS = []
 const UNWRAP_TAGS = []
 const PICKED_ATTRS = ['href', 'src', 'id', 'class', 'data-type', 'title']
 
