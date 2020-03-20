@@ -183,8 +183,6 @@ export class Epub {
 
     const content = await this._resolveXMLAsJsObject('/' + opfPath)
 
-    console.log('content', content)
-
     const manifest = this._getManifest(content)
     const metadata = _.get(content, ['package', 'metadata'], [])
     const tocID = _.get(content, ['package', 'spine', 0, '$', 'toc'], '')
