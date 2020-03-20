@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { traverseNestedObject } from './utils'
 
 const OMITTED_TAGS = []
-const UNWRAP_TAGS = []
+const UNWRAP_TAGS = ['script', 'meta']
 const PICKED_ATTRS = ['href', 'src', 'id', 'class', 'data-type', 'title']
 
 /**
